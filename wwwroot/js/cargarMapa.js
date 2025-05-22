@@ -1,4 +1,6 @@
-﻿let MAP; // Variable global para el mapa
+﻿const { GOOGLE_MAPS_API_KEY } = require("./api_key");
+
+let MAP; // Variable global para el mapa
  function initMap() {
     var customStyles = [
       {
@@ -156,6 +158,9 @@ class ObservadorMapa {
                 // Configurar el contenido del modal dinámicamente
                 document.getElementById('modalTitle').innerText = actividad.tipoActividad;
                 document.getElementById('modalBody').innerText = actividad.mensajeDelAnfitrion;
+                document.getElementById('unirBoton').href = `/Home/UnirseActividad?idActividad=${actividad.idActividad}`; // Cambia la URL según tu lógica
+                
+                });
 
                 // Mostrar el modal de Bootstrap
                 let modal = new bootstrap.Modal(document.getElementById('actividadModal'));

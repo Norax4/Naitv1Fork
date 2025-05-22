@@ -50,6 +50,36 @@ namespace Naitv1.Controllers
             return View();
         }
 
+        public IActionResult UnirseActividad(int idActividad)
+        {
+            if (UsuarioLogueado.estaLogueado(HttpContext.Session) == false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Actividad actividad = _context.Actividades.Find(idActividad) ?? new Actividad();
+
+            if (actividad != null)
+            {
+                Usuario usuario = UsuarioLogueado.Usuario(HttpContext.Session);
+                actividad.Participantes.Add(usuario);
+                usuario.Actividades.Add(actividad);
+
+                ActividadUsuario actUser = new ActividadUsuario();
+                actUser.ActividadId = actividad.Id;
+                actUser.UsuarioId = usuario.Id;
+                actUser.Actividad = actividad;
+                actUser.Usuario = usuario;
+
+                _context.ActividadesUsuarios.Add(actUser);
+            } else
+            {
+                return RedirectToAction("Error", "Home");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Configuracion()
         {
             if (UsuarioLogueado.estaLogueado(HttpContext.Session) == false)
