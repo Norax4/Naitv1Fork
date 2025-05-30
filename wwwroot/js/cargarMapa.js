@@ -132,6 +132,10 @@ class RegistroParticipacionController {
     }
 }
 
+class RegistroReporteController {
+
+}
+
 class Observado {
     constructor() {
         this.observadores = [];
@@ -198,7 +202,11 @@ class ObservadorMapa {
                 // Configurar el contenido del modal dinámicamente
                 document.getElementById('modalTitle').innerText = actividad.tipoActividad;
                 document.getElementById('modalBody').innerText = actividad.mensajeDelAnfitrion;
-                document.getElementById('modalIdActividad').value = actividad.id;
+                document.getElementById('reportarActMod').addEventListener('click', function () {
+                    document.getElementById('reportarActividad').value = actividad.id;
+                    let modal = new bootstrap.Modal(document.getElementById('reportarActModal'));
+                    modal.show();
+                })
 
                 // Mostrar el modal de Bootstrap
                 let modal = new bootstrap.Modal(document.getElementById('actividadModal'));

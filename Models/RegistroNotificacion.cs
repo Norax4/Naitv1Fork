@@ -20,7 +20,7 @@ namespace Naitv1.Models
 
         public string Descripcion { get; set; }
 
-        public string EstadoNotificacion { get; set; }
+        public string EstadoNotificacion { get; set; } = "Pendiente";
 
         public DateTime FechaNotificacion { get; set; } = DateTime.Now;
 

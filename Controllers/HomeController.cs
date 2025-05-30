@@ -72,6 +72,23 @@ namespace Naitv1.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult ReportarActividad(int idActividad, string motivo, string descripcion)
+        {
+            Usuario usuario = UsuarioLogueado.Usuario(HttpContext.Session);
+            RegistroNotificacion notificacion = _context.RegistroNotificaciones
+                .Where(a => a.UsuarioId == usuario.Id)
+                .Where(a => a.ActividadId == idActividad)
+                .Include(a => a.Actividad)
+                .Include(a => a.Usuario)
+                .First();
+
+            if (notificacion != null)
+            {
+                return Json(new { error = ""});
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
