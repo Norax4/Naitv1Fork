@@ -75,18 +75,34 @@ namespace Naitv1.Controllers
         [HttpPost]
         public IActionResult ReportarActividad(int idActividad, string motivo, string descripcion)
         {
+            if (UsuarioLogueado.estaLogueado(HttpContext.Session) == false)
+            {
+                return Json(new { error = "No esta logueado" });
+            }
+
             Usuario usuario = UsuarioLogueado.Usuario(HttpContext.Session);
             RegistroNotificacion notificacion = _context.RegistroNotificaciones
                 .Where(a => a.UsuarioId == usuario.Id)
                 .Where(a => a.ActividadId == idActividad)
-                .Include(a => a.Actividad)
-                .Include(a => a.Usuario)
                 .First();
 
             if (notificacion != null)
             {
-                return Json(new { error = ""});
+                return Json(new { error = "Ya hay un reporte creado"});
             }
+
+            RegistroNotificacion nuevoRegistro = new RegistroNotificacion
+            {
+                ActividadId = idActividad,
+                UsuarioId = usuario.Id,
+                Motivo = motivo,
+                Descripcion = descripcion
+            };
+
+            _context.RegistroNotificaciones.Add(nuevoRegistro);
+            _context.SaveChanges();
+
+            return Json(nuevoRegistro.Id);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

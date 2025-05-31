@@ -133,7 +133,11 @@ class RegistroParticipacionController {
 }
 
 class RegistroReporteController {
+    registrarReporte() {
+        console.log('registrarReporte() llamado');
 
+        fetch()
+    }
 }
 
 class Observado {
